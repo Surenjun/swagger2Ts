@@ -3,7 +3,7 @@ import request from "@/utils/request";
 /**
  * 01、在培人数统计
  */
-export async function Querytrainingstatistic(params: {
+export async function queryTrainingStatistic(params: {
   /*结束时间*/
   endTime?: string;
   /*套餐id*/
@@ -14,8 +14,8 @@ export async function Querytrainingstatistic(params: {
   startTime?: string;
   /*车型id*/
   vehicleKindId?: string;
-}): Promise<TrainingStatisticRsp> {
-  const result = await request<TrainingStatisticRsp>({
+}): Promise<RTrainingStatisticRsp> {
+  const result = await request<RTrainingStatisticRsp>({
     url: "/statistic/training/queryTrainingStatistic.do",
     method: "get",
     params,
@@ -23,9 +23,19 @@ export async function Querytrainingstatistic(params: {
   return result.result;
 }
 
+type RTrainingStatisticRsp = TrainingStatisticRsp;
+
+export interface TrainingStatisticVO {
+  /*数量*/
+  num?: number;
+  /*百分比*/
+  percent?: number;
+  /*科目*/
+  subject?: string;
+}
 export interface TrainingStatisticRsp {
   /**/
   totalCount?: number;
   /**/
-  trainingStatisticList?: array;
+  trainingStatisticList?: TrainingStatisticVO;
 }

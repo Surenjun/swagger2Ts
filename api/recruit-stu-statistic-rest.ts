@@ -3,7 +3,7 @@ import request from "@/utils/request";
 /**
  * 01、招生统计按照时间
  */
-export async function Queryrecruitbydate(params: {
+export async function queryRecruitByDate(params: {
   /*是否包含退学：0不包含1包含*/
   containDropOut: string;
   /*日期类型：1日、2月、3年*/
@@ -18,8 +18,8 @@ export async function Queryrecruitbydate(params: {
   vehicleKindId?: string;
   /*按月份筛选传入年份*/
   year?: string;
-}): Promise<RecruitStuByDateRsp> {
-  const result = await request<RecruitStuByDateRsp>({
+}): Promise<RRecruitStuByDateRsp> {
+  const result = await request<RRecruitStuByDateRsp>({
     url: "/statistic/recruitStudent/queryRecruitByDate.do",
     method: "get",
     params,
@@ -30,7 +30,7 @@ export async function Queryrecruitbydate(params: {
 /**
  * 01、招生统计按照套餐
  */
-export async function Queryrecruitbypackage(params: {
+export async function queryRecruitByPackage(params: {
   /*是否包含退学：0不包含1包含*/
   containDropOut: string;
   /*结束时间*/
@@ -39,8 +39,8 @@ export async function Queryrecruitbypackage(params: {
   startTime?: string;
   /*车型id*/
   vehicleKindId?: string;
-}): Promise<RecruitStuByPackageRsp> {
-  const result = await request<RecruitStuByPackageRsp>({
+}): Promise<RRecruitStuByPackageRsp> {
+  const result = await request<RRecruitStuByPackageRsp>({
     url: "/statistic/recruitStudent/queryRecruitByPackage.do",
     method: "get",
     params,
@@ -51,7 +51,7 @@ export async function Queryrecruitbypackage(params: {
 /**
  * 01、招生统计按照报名点
  */
-export async function Queryrecruitbypoint(params: {
+export async function queryRecruitByPoint(params: {
   /*结束时间*/
   endTime?: string;
   /*套餐id*/
@@ -60,8 +60,8 @@ export async function Queryrecruitbypoint(params: {
   startTime?: string;
   /*车型id*/
   vehicleKindId?: string;
-}): Promise<RecruitStuByPointRsp> {
-  const result = await request<RecruitStuByPointRsp>({
+}): Promise<RRecruitStuByPointRsp> {
+  const result = await request<RRecruitStuByPointRsp>({
     url: "/statistic/recruitStudent/queryRecruitByPoint.do",
     method: "get",
     params,
@@ -72,7 +72,7 @@ export async function Queryrecruitbypoint(params: {
 /**
  * 01、招生统计按照介绍人
  */
-export async function Queryrecruitbysponsor(params: {
+export async function queryRecruitBySponsor(params: {
   /*是否包含退学：0不包含1包含*/
   containDropOut: string;
   /*结束时间*/
@@ -83,8 +83,8 @@ export async function Queryrecruitbysponsor(params: {
   startTime?: string;
   /*车型id*/
   vehicleKindId?: string;
-}): Promise<RecruitStuBySponsorRsp> {
-  const result = await request<RecruitStuBySponsorRsp>({
+}): Promise<RRecruitStuBySponsorRsp> {
+  const result = await request<RRecruitStuBySponsorRsp>({
     url: "/statistic/recruitStudent/queryRecruitBySponsor.do",
     method: "get",
     params,
@@ -92,6 +92,20 @@ export async function Queryrecruitbysponsor(params: {
   return result.result;
 }
 
+type RRecruitStuByDateRsp = RecruitStuByDateRsp;
+
+type RRecruitStuByPackageRsp = RecruitStuByPackageRsp;
+
+type RRecruitStuByPointRsp = RecruitStuByPointRsp;
+
+type RRecruitStuBySponsorRsp = RecruitStuBySponsorRsp;
+
+export interface RecruitStuByDateVO {
+  /*日期*/
+  dateStr?: string;
+  /*统计数量*/
+  num?: number;
+}
 export interface RecruitStuByDateRsp {
   /*当月数据*/
   curMonthCount?: number;
@@ -102,21 +116,39 @@ export interface RecruitStuByDateRsp {
   /*去年数据*/
   lastYearCount?: number;
   /*按日统计的数据*/
-  recruitStuByDateList?: array;
+  recruitStuByDateList?: RecruitStuByDateVO;
   /*今日数据*/
   todayCount?: number;
   /*昨日数据*/
   yesterdayCount?: number;
 }
+export interface RecruitStuByPackageVO {
+  /**/
+  num?: string;
+  /**/
+  packageName?: string;
+}
 export interface RecruitStuByPackageRsp {
   /*按照套餐统计的数据*/
-  recruitStuByPackageList?: array;
+  recruitStuByPackageList?: RecruitStuByPackageVO;
+}
+export interface RecruitStuByPointVO {
+  /*数量*/
+  num?: number;
+  /*报名点名称*/
+  pointName?: string;
 }
 export interface RecruitStuByPointRsp {
   /*按照报名点统计的数据*/
-  recruitStuByPointList?: array;
+  recruitStuByPointList?: RecruitStuByPointVO;
+}
+export interface RecruitStuBySponsorVO {
+  /*数量*/
+  num?: number;
+  /*介绍人名称*/
+  sponsorName?: string;
 }
 export interface RecruitStuBySponsorRsp {
   /*按照介绍人统计的数据*/
-  recruitStuBySponsorList?: array;
+  recruitStuBySponsorList?: RecruitStuBySponsorVO;
 }

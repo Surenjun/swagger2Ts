@@ -3,7 +3,7 @@ import request from "@/utils/request";
 /**
  * 01、考试按教练统计
  */
-export async function Examstatisticbycoach(params: {
+export async function examStatisticByCoach(params: {
   /*结束时间*/
   endTime?: string;
   /*教练是否离职 1显示离职 0不显示*/
@@ -16,8 +16,8 @@ export async function Examstatisticbycoach(params: {
   subject?: string;
   /*车型id*/
   vehicleKindId?: string;
-}): Promise<ExamByCoachData> {
-  const result = await request<ExamByCoachData>({
+}): Promise<RListExamByCoachData> {
+  const result = await request<RListExamByCoachData>({
     url: "/statistic/exam/examStatisticByCoach.do",
     method: "get",
     params,
@@ -28,7 +28,7 @@ export async function Examstatisticbycoach(params: {
 /**
  * 01、考试按时间统计
  */
-export async function Examstatisticbydate(params: {
+export async function examStatisticByDate(params: {
   /*月份yyyyMM*/
   month?: string;
   /*报名点*/
@@ -37,14 +37,18 @@ export async function Examstatisticbydate(params: {
   subject?: string;
   /*车型id*/
   vehicleKindId?: string;
-}): Promise<ExamByDateRsp> {
-  const result = await request<ExamByDateRsp>({
+}): Promise<RExamByDateRsp> {
+  const result = await request<RExamByDateRsp>({
     url: "/statistic/exam/examStatisticByDate.do",
     method: "get",
     params,
   });
   return result.result;
 }
+
+type RListExamByCoachData = ExamByCoachData;
+
+type RExamByDateRsp = ExamByDateRsp;
 
 export interface ExamByCoachData {
   /**/
@@ -60,7 +64,41 @@ export interface ExamByCoachData {
   /**/
   passRate?: string;
 }
+export interface ExamByDateEntity {
+  /**/
+  examDate?: string;
+  /**/
+  examRecordId?: number;
+  /*1、已预约 2、通过 3、不通过 4、旷考 5、已确认 */
+  examResult?: string;
+  /**/
+  schoolId?: number;
+  /**/
+  studentId?: number;
+  /**/
+  studentName?: string;
+  /**/
+  subject?: string;
+}
+export interface ExamByDateVO {
+  /**/
+  count?: number;
+  /**/
+  studentExamInfo?: ExamByDateEntity;
+}
+export interface ExamByDateData {
+  /**/
+  date?: string;
+  /**/
+  orderExamRecord?: ExamByDateVO;
+  /**/
+  passedExamRecord?: ExamByDateVO;
+  /**/
+  realExamRecord?: ExamByDateVO;
+  /**/
+  unPassedExamRecord?: ExamByDateVO;
+}
 export interface ExamByDateRsp {
   /**/
-  examByDateList?: array;
+  examByDateList?: ExamByDateData;
 }

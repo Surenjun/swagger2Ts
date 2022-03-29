@@ -7,8 +7,8 @@ export async function getVerificationCode(data: {
   /*param*/
 
   param: VerificationCodeReq;
-}): Promise<VerificationCodeRsp> {
-  const result = await request<VerificationCodeRsp>({
+}): Promise<RVerificationCodeRsp> {
+  const result = await request<RVerificationCodeRsp>({
     url: "/home/getVerificationCode.do",
     method: "post",
 
@@ -20,8 +20,8 @@ export async function getVerificationCode(data: {
 /**
  * 03、首页统计数据
  */
-export async function Homestatistic(params: {}): Promise<HomeStatisticRsp> {
-  const result = await request<HomeStatisticRsp>({
+export async function homeStatistic(params: {}): Promise<RHomeStatisticRsp> {
+  const result = await request<RHomeStatisticRsp>({
     url: "/home/homeStatistic.do",
     method: "get",
     params,
@@ -32,8 +32,8 @@ export async function Homestatistic(params: {}): Promise<HomeStatisticRsp> {
 /**
  * 04、招生段子列表
  */
-export async function Queryemployeeforumlist(params: {}): Promise<EmployeeForumVO> {
-  const result = await request<EmployeeForumVO>({
+export async function queryEmployeeForumList(params: {}): Promise<RListEmployeeForumVO> {
+  const result = await request<RListEmployeeForumVO>({
     url: "/home/queryEmployeeForumList.do",
     method: "get",
     params,
@@ -44,8 +44,8 @@ export async function Queryemployeeforumlist(params: {}): Promise<EmployeeForumV
 /**
  * 05、获取学员套餐包信息列表
  */
-export async function Querylearnpackagelist(params: {}): Promise<LearnPackageVO> {
-  const result = await request<LearnPackageVO>({
+export async function queryLearnPackageList(params: {}): Promise<RListLearnPackageVO> {
+  const result = await request<RListLearnPackageVO>({
     url: "/home/queryLearnPackageList.do",
     method: "get",
     params,
@@ -56,8 +56,8 @@ export async function Querylearnpackagelist(params: {}): Promise<LearnPackageVO>
 /**
  * 06、获取学员报名点信息列表
  */
-export async function Queryrecruitpointlist(params: {}): Promise<RecruitPointVO> {
-  const result = await request<RecruitPointVO>({
+export async function queryRecruitPointList(params: {}): Promise<RListRecruitPointVO> {
+  const result = await request<RListRecruitPointVO>({
     url: "/home/queryRecruitPointList.do",
     method: "get",
     params,
@@ -68,8 +68,8 @@ export async function Queryrecruitpointlist(params: {}): Promise<RecruitPointVO>
 /**
  * 06、获取车型列表
  */
-export async function Queryvehiclekindlist(params: {}): Promise<VehicleKindVO> {
-  const result = await request<VehicleKindVO>({
+export async function queryVehicleKindList(params: {}): Promise<RListVehicleKindVO> {
+  const result = await request<RListVehicleKindVO>({
     url: "/home/queryVehicleKindList.do",
     method: "get",
     params,
@@ -80,8 +80,8 @@ export async function Queryvehiclekindlist(params: {}): Promise<VehicleKindVO> {
 /**
  * 06、获取车型套餐关联列表
  */
-export async function Queryvehiclekindpackagelist(params: {}): Promise<VehicleKindPackageVO> {
-  const result = await request<VehicleKindPackageVO>({
+export async function queryVehicleKindPackageList(params: {}): Promise<RListVehicleKindPackageVO> {
+  const result = await request<RListVehicleKindPackageVO>({
     url: "/home/queryVehicleKindPackageList.do",
     method: "get",
     params,
@@ -113,8 +113,8 @@ export async function userLogin(data: {
   /*req*/
 
   req: UserLoginReq;
-}): Promise<用户基本信息> {
-  const result = await request<用户基本信息>({
+}): Promise<R用户基本信息> {
+  const result = await request<R用户基本信息>({
     url: "/home/userLogin.do",
     method: "post",
 
@@ -136,6 +136,22 @@ export async function userLogout(data: {}): Promise<R> {
   return result.result;
 }
 
+type RVerificationCodeRsp = VerificationCodeRsp;
+
+type RHomeStatisticRsp = HomeStatisticRsp;
+
+type RListEmployeeForumVO = EmployeeForumVO;
+
+type RListLearnPackageVO = LearnPackageVO;
+
+type RListRecruitPointVO = RecruitPointVO;
+
+type RListVehicleKindVO = VehicleKindVO;
+
+type RListVehicleKindPackageVO = VehicleKindPackageVO;
+
+type R用户基本信息 = 用户基本信息;
+
 export interface VerificationCodeReq {
   /*用户账号*/
   account?: string;
@@ -148,6 +164,26 @@ export interface VerificationCodeRsp {
   /*验证码*/
   verificationCode?: string;
 }
+export interface MenuBean {
+  /*菜单分类id*/
+  classifyId?: number;
+  /*菜单code*/
+  code?: string;
+  /*图标地址*/
+  iconUrl?: string;
+  /*菜单id*/
+  menuId?: number;
+  /*功能名称*/
+  name?: string;
+  /*排序号*/
+  orderNo?: number;
+  /*小程序包名*/
+  packageName?: string;
+  /*路由地址*/
+  routeUrl?: string;
+  /*是否可用：0不可用，1可用*/
+  useStatus?: string;
+}
 export interface HomeStatisticRsp {
   /*今日支出*/
   dailyExpenditure?: string;
@@ -158,13 +194,13 @@ export interface HomeStatisticRsp {
   /*今日招生*/
   dailyStuAddCount?: number;
   /*对应的菜单*/
-  menuList?: array;
+  menuList?: MenuBean;
 }
 export interface EmployeeForumVO {
   /*内容*/
   content?: string;
   /*图片*/
-  forumPhotos?: array;
+  forumPhotos?: string[];
   /*发布人头像*/
   headUrl?: string;
   /**/
@@ -196,7 +232,7 @@ export interface VehicleKindVO {
 }
 export interface VehicleKindPackageVO {
   /**/
-  learnPackages?: array;
+  learnPackages?: LearnPackageVO;
   /**/
   vehicleKindId?: string;
   /**/
@@ -214,7 +250,7 @@ export interface R {
   /*状态码 1成功 0通用失败*/
   code?: number;
   /*承载数据*/
-  data?: object;
+  data?: { [k: string]: any };
   /*返回消息*/
   msg?: string;
 }
@@ -223,6 +259,30 @@ export interface UserLoginReq {
   account?: string;
   /*用户密码*/
   password?: string;
+}
+export interface MenuClassifyBean {
+  /*分类id*/
+  classifyId?: number;
+  /*图标地址*/
+  iconUrl?: string;
+  /*菜单列表*/
+  menuBeanList?: MenuBean;
+  /*菜单名称*/
+  name?: string;
+  /*排序号*/
+  orderNo?: number;
+  /*1首页 2管理 3教学 4我的*/
+  pageType?: string;
+}
+export interface EmployeeRoleBean {
+  /*角色名称*/
+  name?: string;
+  /*备注*/
+  remark?: string;
+  /*角色id*/
+  roleId?: number;
+  /*0驾校为默认配置*/
+  schoolId?: number;
 }
 export interface 用户基本信息 {
   /*用户账号*/
@@ -244,7 +304,7 @@ export interface 用户基本信息 {
   /*环信账号*/
   imUsername?: string;
   /*菜单分类列表*/
-  menuClassifies?: array;
+  menuClassifies?: MenuClassifyBean;
   /*用户头像*/
   photoPath?: string;
   /*所属省份id*/
@@ -252,7 +312,7 @@ export interface 用户基本信息 {
   /*所属省份 -正式用户返回当前驾校所属的省份*/
   provinceName?: string;
   /*角色列表*/
-  roleList?: array;
+  roleList?: EmployeeRoleBean;
   /*驾校id*/
   schoolId?: string;
   /*驾校名称*/

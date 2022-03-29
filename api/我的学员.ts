@@ -3,24 +3,23 @@ import request from "@/utils/request";
 /**
  * 01、查询我的学员列表
  */
-
-
-
-export async function Querymystudentlist(params: {
+export async function queryMyStudentList(params: {
   /*学习科目id 1、报名 2、第一部分 3、第二部分 4、第三部分 5、第4部分*/
   learnSubjectId?: string;
   /*欠费状态 1：欠费 0：不欠费*/
   needPay?: string;
   /*学员姓名*/
   studentName?: string;
-}): Promise<MyStudentRsp> {
-  const result = await request<MyStudentRsp>({
+}): Promise<RListMyStudentRsp> {
+  const result = await request<RListMyStudentRsp>({
     url: "/myStudent/queryMyStudentList.do",
     method: "get",
     params,
   });
   return result.result;
 }
+
+type RListMyStudentRsp = MyStudentRsp;
 
 export interface MyStudentRsp {
   /*科目Id 1、报名 2、第一部分 3、第二部分 4、第三部分 5、第4部分*/

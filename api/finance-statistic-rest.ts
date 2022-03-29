@@ -3,7 +3,7 @@ import request from "@/utils/request";
 /**
  * 01、财务统计按照时间
  */
-export async function Queryfinancebydate(params: {
+export async function queryFinanceByDate(params: {
   /*日期类型：1日、2月、3年*/
   dateType: string;
   /*按日筛选传入月份*/
@@ -12,8 +12,8 @@ export async function Queryfinancebydate(params: {
   pointId?: string;
   /*按月份筛选传入年份*/
   year?: string;
-}): Promise<FinanceByDateRsp> {
-  const result = await request<FinanceByDateRsp>({
+}): Promise<RFinanceByDateRsp> {
+  const result = await request<RFinanceByDateRsp>({
     url: "/statistic/finance/queryFinanceByDate.do",
     method: "get",
     params,
@@ -24,15 +24,15 @@ export async function Queryfinancebydate(params: {
 /**
  * 01、财务统计按照支付方式
  */
-export async function Queryfinancebypayway(params: {
+export async function queryFinanceByPayWay(params: {
   /*结束时间*/
   endTime?: string;
   /*报名点*/
   pointId?: string;
   /*开始时间*/
   startTime?: string;
-}): Promise<FinanceByPayWayRsp> {
-  const result = await request<FinanceByPayWayRsp>({
+}): Promise<RFinanceByPayWayRsp> {
+  const result = await request<RFinanceByPayWayRsp>({
     url: "/statistic/finance/queryFinanceByPayWay.do",
     method: "get",
     params,
@@ -43,15 +43,15 @@ export async function Queryfinancebypayway(params: {
 /**
  * 01、财务统计按照款项
  */
-export async function Queryfinancebypayment(params: {
+export async function queryFinanceByPayment(params: {
   /*结束时间*/
   endTime?: string;
   /*报名点*/
   pointId?: string;
   /*开始时间*/
   startTime?: string;
-}): Promise<FinanceByPaymentRsp> {
-  const result = await request<FinanceByPaymentRsp>({
+}): Promise<RFinanceByPaymentRsp> {
+  const result = await request<RFinanceByPaymentRsp>({
     url: "/statistic/finance/queryFinanceByPayment.do",
     method: "get",
     params,
@@ -62,13 +62,13 @@ export async function Queryfinancebypayment(params: {
 /**
  * 01、财务统计按照报名点
  */
-export async function Queryfinancebypoint(params: {
+export async function queryFinanceByPoint(params: {
   /*结束时间*/
   endTime?: string;
   /*开始时间*/
   startTime?: string;
-}): Promise<FinanceByPointRsp> {
-  const result = await request<FinanceByPointRsp>({
+}): Promise<RFinanceByPointRsp> {
+  const result = await request<RFinanceByPointRsp>({
     url: "/statistic/finance/queryFinanceByPoint.do",
     method: "get",
     params,
@@ -79,11 +79,11 @@ export async function Queryfinancebypoint(params: {
 /**
  * 01、按日期查资金流水
  */
-export async function Queryfinanceitemlist(params: {
+export async function queryFinanceItemList(params: {
   /*日期*/
   date?: string;
-}): Promise<FinanceItemVO> {
-  const result = await request<FinanceItemVO>({
+}): Promise<RListFinanceItemVO> {
+  const result = await request<RListFinanceItemVO>({
     url: "/statistic/finance/queryFinanceItemList.do",
     method: "get",
     params,
@@ -91,11 +91,31 @@ export async function Queryfinanceitemlist(params: {
   return result.result;
 }
 
+type RFinanceByDateRsp = FinanceByDateRsp;
+
+type RFinanceByPayWayRsp = FinanceByPayWayRsp;
+
+type RFinanceByPaymentRsp = FinanceByPaymentRsp;
+
+type RFinanceByPointRsp = FinanceByPointRsp;
+
+type RListFinanceItemVO = FinanceItemVO;
+
+export interface FinanceByDateVO {
+  /*支出*/
+  expend?: string;
+  /*收入*/
+  income?: string;
+  /*日期*/
+  payDate?: string;
+  /*退费*/
+  refund?: string;
+}
 export interface FinanceByDateRsp {
   /*欠费*/
   arrears?: string;
   /*按照时间统计的数据*/
-  financeByDateList?: array;
+  financeByDateList?: FinanceByDateVO;
   /*今日支出*/
   todayExpend?: string;
   /*今日收入*/
@@ -107,19 +127,39 @@ export interface FinanceByDateRsp {
   /*昨日收入*/
   yesterdayIncome?: string;
 }
+export interface FinanceByPayWayVO {
+  /*支出*/
+  expend?: string;
+  /*收入*/
+  income?: string;
+  /*支付方式*/
+  payWay?: string;
+  /*退费*/
+  refund?: string;
+}
 export interface FinanceByPayWayRsp {
   /*按照支付方式统计的数据*/
-  financeByPayWayList?: array;
+  financeByPayWayList?: FinanceByPayWayVO;
   /*合计支出*/
   totalExpend?: string;
   /*合计收入*/
   totalInCome?: string;
   /*合计退款*/
   totalRefund?: string;
+}
+export interface FinanceByPaymentVO {
+  /*支出*/
+  expend?: string;
+  /*收入*/
+  income?: string;
+  /*款项*/
+  payment?: string;
+  /*退费*/
+  refund?: string;
 }
 export interface FinanceByPaymentRsp {
   /*按照款项统计的数据*/
-  financeByPaymentList?: array;
+  financeByPaymentList?: FinanceByPaymentVO;
   /*合计支出*/
   totalExpend?: string;
   /*合计收入*/
@@ -127,9 +167,21 @@ export interface FinanceByPaymentRsp {
   /*合计退款*/
   totalRefund?: string;
 }
+export interface FinanceByPointVO {
+  /*支出*/
+  expend?: string;
+  /*收入*/
+  income?: string;
+  /*报名点id*/
+  pointId?: number;
+  /*报名点名称*/
+  pointName?: string;
+  /*退费*/
+  refund?: string;
+}
 export interface FinanceByPointRsp {
   /**/
-  financeByPointList?: array;
+  financeByPointList?: FinanceByPointVO;
   /*合计支出*/
   totalExpend?: string;
   /*合计收入*/

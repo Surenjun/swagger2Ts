@@ -57,6 +57,7 @@ class SwaggerApi {
                     operationId,
                     tags: tags[0]
                 }
+
             })
         })
 

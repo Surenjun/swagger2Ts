@@ -13,10 +13,15 @@ class Template {
     public cacheInterfaces: {
         [k: string]: Object
     }
+    public cacheTypes: {
+        [k: string]: Object
+    }
 
     constructor() {
         //当前controller用到的ts类型
         this.cacheInterfaces = {};
+        //当前controller用到的type类型
+        this.cacheTypes = {}
         //当前controller用到的方法
         this.methodTemps = 'import request from "@/utils/request"\n';
         this.existInterfaceKey = []
@@ -29,8 +34,8 @@ class Template {
 
         Reflect.ownKeys(controller).forEach((pathKey: string) => {
             const thisMethod = controller[pathKey];
-            const {type, summary, parameters, operationId, response,apiPath} = thisMethod;
-            const methodName = type === 'get' ? `${capitalizedTitleCase(pathKey)}` : pathKey;
+            const {type, summary, parameters, operationId, response, apiPath} = thisMethod;
+            const methodName = type === 'get' ? `${pathKey}` : pathKey;
             this.emitMethods(
                 {
                     apiPath,
@@ -46,6 +51,10 @@ class Template {
 
         const existInterfaceKey = this.existInterfaceKey
 
+        //处理types
+        Reflect.ownKeys(this.cacheTypes).forEach((typeKey: string) => {
+            this.methodTemps += '\n' + this.cacheTypes[typeKey]
+        })
 
         Reflect.ownKeys(this.cacheInterfaces).forEach((interfaceKey: string) => {
             if (existInterfaceKey.includes(interfaceKey)) {
@@ -67,7 +76,7 @@ class Template {
 
     //单个方法生成
     emitMethods(method: Method) {
-        const {methodName, summary, parameters, methodType, response,apiPath} = method;
+        const {methodName, summary, parameters, methodType, response, apiPath} = method;
         const paramsTemp = this.methodReqParams({methodType, parameters})
         const responseKey = this.getInterfaceKey(response)
 
@@ -79,7 +88,7 @@ class Template {
             /**
              * ${summary || ''}
              */
-            export async function ${methodName}(${isGet ?'params':'data'}:{
+            export async function ${methodName}(${isGet ? 'params' : 'data'}:{
                 ${paramsTemp || ''}
             }):Promise<${responseKey || ''}>{
                 const result = await request<${responseKey || ''}>({
@@ -131,7 +140,8 @@ class Template {
     recurseTsInterface(definition) {
         if (definition.properties) {
             const properties = definition.properties;
-            const simpleKey = definition.title;
+            const simpleKey = this.getInterfaceKey(definition.title);
+
             let isSimple = true;
             let simpleStr = ''
             Reflect.ownKeys(properties).map((properKey: string) => {
@@ -141,17 +151,28 @@ class Template {
                     //递归去读ref
                     this.recurseTsInterface($ref)
                     simpleStr += `${properKey}:${this.getDefinitionKey($ref)}`
+                    //TODO 去掉第一层 isSimple = false;
                     isSimple = false;
                 } else {
+
                     simpleStr += this.getSimpleTs({name: properKey, ...thisProperty})
                 }
             })
+
             if (isSimple) {
                 this.cacheInterfaces[simpleKey] = simpleStr
+            } else {
+                //TODO 临时处理第一层
+                const data = definition.properties.data
+                this.cacheTypes[simpleKey] = `
+                 type ${simpleKey}  = ${this.getInterfaceKey(data.$ref || data.items?.$ref)}
+                `
             }
+
         } else {
             const definitionKey = this.getDefinitionKey(definition);
             const interfaceKey = this.getInterfaceKey(definition)
+
             if (!this.cacheInterfaces[definitionKey]) {
                 const properties = this.definitions[definitionKey]?.properties || {};
                 this.cacheInterfaces[interfaceKey] =
@@ -166,8 +187,8 @@ class Template {
     }
 
     //返回的参数模版
-    methodResParams() {
-
+    methodResParams(methodResParams) {
+        console.log(methodResParams);
     }
 
     //单个类型定义
@@ -184,13 +205,55 @@ class Template {
     //接口的Key
     getInterfaceKey($ref): string {
         const lastRefKey = $ref.split('/').slice(-1)[0];
-        const matched = lastRefKey?.match(/(?<=«)[^«»]+(?=»)/);
-        return matched ? matched[0] : lastRefKey
+        // const matched = lastRefKey?.match(/(?<=«)[^«»]+(?=»)/);
+        const matched = lastRefKey?.match(/[^«»]+/g);
+        return matched.join('')
     }
 
+    // @ts-ignore
+    transformType(type, $ref?: string, param?: any): string {
+        switch (type) {
+            case 'string':
+                return 'string'
+            case 'integer':
+                return 'number'
+            case 'boolean':
+                return 'boolean'
+            case 'object':
+                return '{[k:string]:any}'
+            //数组特殊处理
+            case 'array':
+                console.log(param.items);
+                console.log($ref);
+                return $ref ? $ref : `${this.transformType(param.items.type)}[]`
+
+            default:
+                return $ref
+        }
+    }
+
+
     getSimpleTs(param) {
+        let definitionKey = undefined
+        if (param.type === 'array') {
+
+            if (param.items.$ref) {
+                // this.getSimpleTs(param)
+                definitionKey = this.getDefinitionKey(param.items.$ref);
+                this.recurseTsInterface(param.items.$ref);
+
+            }
+            // TODO string类型待处理
+        }
+
+        if (param.$ref) {
+            definitionKey = this.getDefinitionKey(param.$ref);
+            this.recurseTsInterface(param.$ref);
+        }
+
+
         return `/*${param?.description || ''}*/
-                ${param.name}${param.required ? ':' : '?:'}${param.type === 'integer' ? 'number' : param.type}\n`
+                ${param.name}${param.required ? ':' : '?:'}${this.transformType(param.type, definitionKey, param)}\n`
     }
 
 
