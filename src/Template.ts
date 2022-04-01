@@ -1,9 +1,14 @@
 import {Definition, Controller, Method, methodType} from './types/interface'
 import {capitalizedTitleCase} from './utils'
+import path from "path";
 
 const fse = require('fs-extra');
 const prettier = require("prettier");
+let configPath = path.join(process.cwd(), './swagger-config');
 
+const configObj = require(configPath)
+
+const {api: {swaggerUrl, dir, topPackagesStr, include, exclude}} = configObj
 class Template {
 
     public definitions: Definition
@@ -23,7 +28,8 @@ class Template {
         //当前controller用到的type类型
         this.cacheTypes = {}
         //当前controller用到的方法
-        this.methodTemps = 'import request from "@/utils/request"\n';
+        this.methodTemps =  topPackagesStr?.join(';\n') || '';
+
         this.existInterfaceKey = []
     }
 
@@ -61,7 +67,7 @@ class Template {
 
             } else {
                 existInterfaceKey.push(interfaceKey)
-                this.methodTemps += '\n' + this.emitInterfaces({
+                this.methodTemps += '\r' + this.emitInterfaces({
                     name: interfaceKey,
                     properties: this.cacheInterfaces[interfaceKey]
                 })
@@ -188,7 +194,6 @@ class Template {
 
     //返回的参数模版
     methodResParams(methodResParams) {
-        console.log(methodResParams);
     }
 
     //单个类型定义
@@ -223,8 +228,6 @@ class Template {
                 return '{[k:string]:any}'
             //数组特殊处理
             case 'array':
-                console.log(param.items);
-                console.log($ref);
                 return $ref ? $ref : `${this.transformType(param.items.type)}[]`
 
             default:
@@ -265,7 +268,8 @@ class Template {
     //生成文件
     emitFile() {
         const {cacheInterfaces, methodTemps, controllerName} = this;
-        const file = `./api/${controllerName}.ts`;
+        const filePah = path.join(process.cwd(),dir ?dir:'./api')
+        const file = `${filePah}/${controllerName}.ts`;
         fse.outputFile(file, methodTemps, 'utf8')
     }
 

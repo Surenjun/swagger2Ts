@@ -1,5 +1,23 @@
+<h2 align = "center">Install</h2>
+
+---
+#### Install with npm:
+```
+npm i swagger-ts-duolun
+```
+#### Install with yarn:
+```
+yarn add swagger-ts-duolun
+```
+
+--- 
+<h2 align = "center">Config</h2>
+
+```javascript
+// 根目录新建swagger-config配置文件，配置如下
+
 module.exports = {
-    //ts版本｜js版本
+    //ts版本｜js版本 
     type: "ts",
     api: {
         //swagger-api地址
@@ -20,3 +38,9 @@ module.exports = {
         exclude: [],
     }
 }
+```
+---
+<h2 align = "center">Result</h2>
+
+
+

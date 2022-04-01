@@ -1,8 +1,19 @@
 {
+
   "compilerOptions": {
-    "sourceMap": true
+    "target": "es5",
+    "declaration": true, //打包之后是否生成声明文件
+    "outDir": "./lib", //输出文件
+    "esModuleInterop": true,
+    "lib": ["es6"]
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

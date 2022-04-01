@@ -7,8 +7,8 @@ export async function getVerificationCode(data: {
   /*param*/
 
   param: VerificationCodeReq;
-}): Promise<RVerificationCodeRsp> {
-  const result = await request<RVerificationCodeRsp>({
+}): Promise<R> {
+  const result = await request<R>({
     url: "/home/getVerificationCode.do",
     method: "post",
 
@@ -136,8 +136,6 @@ export async function userLogout(data: {}): Promise<R> {
   return result.result;
 }
 
-type RVerificationCodeRsp = VerificationCodeRsp;
-
 type RHomeStatisticRsp = HomeStatisticRsp;
 
 type RListEmployeeForumVO = EmployeeForumVO;
@@ -158,11 +156,13 @@ export interface VerificationCodeReq {
   /*业务类型: G、用户登录 H、密码修改*/
   type?: string;
 }
-export interface VerificationCodeRsp {
-  /*图片验证码base64*/
-  imageBase64?: string;
-  /*验证码*/
-  verificationCode?: string;
+export interface R {
+  /*状态码 1成功 0通用失败*/
+  code?: number;
+  /*承载数据*/
+  data?: { [k: string]: any };
+  /*返回消息*/
+  msg?: string;
 }
 export interface MenuBean {
   /*菜单分类id*/
@@ -192,7 +192,7 @@ export interface HomeStatisticRsp {
   /*今日退费*/
   dailyRefund?: string;
   /*今日招生*/
-  dailyStuAddCount?: number;
+  dailyStuAddCount?: string;
   /*对应的菜单*/
   menuList?: MenuBean;
 }
@@ -245,14 +245,6 @@ export interface UpdateUserPsdReq {
   checkCode?: string;
   /*用户密码*/
   psd?: string;
-}
-export interface R {
-  /*状态码 1成功 0通用失败*/
-  code?: number;
-  /*承载数据*/
-  data?: { [k: string]: any };
-  /*返回消息*/
-  msg?: string;
 }
 export interface UserLoginReq {
   /*用户账号*/
