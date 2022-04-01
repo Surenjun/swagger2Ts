@@ -1,11 +1,15 @@
 {
-  "name": "swagger-api-duolun",
-  "version": "0.0.4",
+  "name": "swagger-ts-duolun",
+  "version": "0.0.6",
   "description": "",
   "auther": "surenjun",
   "scripts": {
     "build": "ts-node ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Surenjun/swagger2Ts"
   },
   "keywords": [],
   "author": "",

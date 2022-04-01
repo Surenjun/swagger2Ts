@@ -19,6 +19,7 @@ module.exports = {
     //ts版本｜js版本 
     type: "ts",
     api: {
+        
         //swagger-api地址
         swaggerUrl: 'http://192.168.1.149:8083/v2/api-docs?group=%E7%AE%A1%E7%90%86%E7%89%88app%E6%8E%A5%E5%8F%A3',
 
