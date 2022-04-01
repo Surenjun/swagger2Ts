@@ -46,6 +46,7 @@ module.exports = {
 }
 ```
 <h2 align = "center">Result</h2>
+
 #### Usage method：
 ![使用方法](./static/kapture.gif)
 
