@@ -48,7 +48,7 @@ module.exports = {
 <h2 align = "center">Result</h2>
 
 #### Usage method：
-![使用方法](./static/kapture.gif)
+![使用方法](https://github.com/Surenjun/swagger2Ts/blob/duolun/static/kapture.gif)
 
 #### Generated code：
 ![使用方法](./static/WX20220401-095328@2x.png)
