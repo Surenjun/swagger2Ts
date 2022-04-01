@@ -52,7 +52,7 @@ module.exports = {
 ![使用方法](https://github.com/Surenjun/swagger2Ts/blob/duolun/static/kapture.gif)
 
 #### Generated code：
-![使用方法](./static/WX20220401-095328@2x.png)
+![截图](./static/code.png)
 
 
 
