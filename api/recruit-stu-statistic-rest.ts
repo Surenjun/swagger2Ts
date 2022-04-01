@@ -92,14 +92,6 @@ export async function queryRecruitBySponsor(params: {
   return result.result;
 }
 
-type RRecruitStuByDateRsp = RecruitStuByDateRsp;
-
-type RRecruitStuByPackageRsp = RecruitStuByPackageRsp;
-
-type RRecruitStuByPointRsp = RecruitStuByPointRsp;
-
-type RRecruitStuBySponsorRsp = RecruitStuBySponsorRsp;
-
 export interface RecruitStuByDateVO {
   /*日期*/
   dateStr?: string;
@@ -152,3 +144,13 @@ export interface RecruitStuBySponsorRsp {
   /*按照介绍人统计的数据*/
   recruitStuBySponsorList?: RecruitStuBySponsorVO;
 }
+
+
+type RRecruitStuByDateRsp = RecruitStuByDateRsp;
+
+type RRecruitStuByPackageRsp = RecruitStuByPackageRsp;
+
+type RRecruitStuByPointRsp = RecruitStuByPointRsp;
+
+type RRecruitStuBySponsorRsp = RecruitStuBySponsorRsp;
+函数

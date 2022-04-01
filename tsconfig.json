@@ -5,7 +5,10 @@
     "declaration": true, //打包之后是否生成声明文件
     "outDir": "./lib", //输出文件
     "esModuleInterop": true,
-    "lib": ["es6"]
+    "lib": ["es6"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "ts-node": {
     "esm": true
@@ -14,6 +17,6 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules","api"
   ]
 }

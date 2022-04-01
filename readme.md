@@ -38,9 +38,21 @@ module.exports = {
         exclude: [],
     }
 }
+
+/****************************************************************************************************************/
+
+// package.json添加配置
+{
+    "api"："node ./node_modules/swagger-api/lib/index.js "
+}
 ```
 ---
 <h2 align = "center">Result</h2>
+#### Usage method：
+![使用方法](./static/Kapture 2022-04-01 at 09.40.28.gif)
+
+#### Generated code：
+![使用方法](./static/WX20220401-095328@2x.png)
 
 
 
