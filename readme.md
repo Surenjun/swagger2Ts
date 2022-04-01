@@ -1,6 +1,6 @@
 <h2 align = "center">Install</h2>
 
----
+
 #### Install with npm:
 ```
 npm i swagger-ts-duolun
@@ -10,7 +10,6 @@ npm i swagger-ts-duolun
 yarn add swagger-ts-duolun
 ```
 
---- 
 <h2 align = "center">Config</h2>
 
 ```javascript
@@ -46,10 +45,9 @@ module.exports = {
     "api"："node ./node_modules/swagger-api/lib/index.js "
 }
 ```
----
 <h2 align = "center">Result</h2>
 #### Usage method：
-![使用方法](./static/Kapture 2022-04-01 at 09.40.28.gif)
+![使用方法](./static/kapture.gif)
 
 #### Generated code：
 ![使用方法](./static/WX20220401-095328@2x.png)
